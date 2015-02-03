@@ -93,6 +93,9 @@ sub update_system {
     return;
   }
 
+  $self->update_package_db()
+    if ( Rex::Config->get_update_package_db_with_update );
+
   my $cmd = $self->{commands}->{update_system};
   i_run $cmd;
 }

@@ -598,6 +598,12 @@ sub import {
         $found_feature = 1;
       }
 
+      if ( $add =~ m/^\d+\.\d+$/ && $add >= 1.0 ) {
+        Rex::Logger::debug("Enable update_package_db_with_update.");
+        Rex::Config->set_update_package_db_with_update(1);
+        $found_feature = 1;
+      }
+
       if ( $add =~ m/^\d+\.\d+$/ && $add >= 0.56 ) {
         Rex::Logger::debug("Activating autodie.");
         Rex::Config->set_autodie(1);

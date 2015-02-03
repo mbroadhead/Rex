@@ -48,6 +48,10 @@ sub bulk_install {
 sub update_system {
   my ($self) = @_;
   my @pkgs;
+
+  $self->update_package_db()
+    if ( Rex::Config->get_update_package_db_with_update );
+
   my @lines = i_run("opkg list-upgradable");
 
   for my $line (@lines) {

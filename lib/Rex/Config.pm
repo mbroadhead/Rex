@@ -62,7 +62,7 @@ our (
   $register_cmdb_template,   $check_service_exists,
   $set_no_append,            $use_net_openssh_if_present,
   $use_template_ng,          $use_rex_kvm_agent,
-  $autodie,
+  $autodie,                  $update_package_db_with_update,
 
 );
 
@@ -73,6 +73,15 @@ our (
   ruby   => "ruby",
   bash   => "bash",
 );
+
+sub set_update_package_db_with_update {
+  my $class = shift;
+  $update_package_db_with_update = shift;
+}
+
+sub get_update_package_db_with_update {
+  return $update_package_db_with_update;
+}
 
 sub set_autodie {
   my $class = shift;
