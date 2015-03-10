@@ -491,7 +491,7 @@ You can mix the three variants above
 
   www[1..3,5,9..21/3]
 
-=>
+will become
 
   www1, www2, www3, www5, www9, www12, www15, www18, www21
 
