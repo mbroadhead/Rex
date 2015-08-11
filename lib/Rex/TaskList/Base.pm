@@ -201,14 +201,15 @@ sub create_task {
       ? $options->{exit_on_connect_fail}
       : 1
     ),
-    before              => [],
-    after               => [],
-    around              => [],
-    after_task_finished => [],
-    before_task_start   => [],
-    name                => $task_name,
-    executor            => Rex::Interface::Executor->create,
-    connection_type     => Rex::Config->get_connection_type,
+    before                => [],
+    after                 => [],
+    around                => [],
+    after_task_finished   => [],
+    before_task_start     => [],
+    after_connect_failure => [],
+    name                  => $task_name,
+    executor              => Rex::Interface::Executor->create,
+    connection_type       => Rex::Config->get_connection_type,
   );
 
   if ( $self->{DEFAULT_AUTH} ) {

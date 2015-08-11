@@ -140,7 +140,7 @@ use base qw(Rex::Exporter);
   path
   set
   get
-  before after around before_task_start after_task_finished
+  before after around before_task_start after_task_finished after_connect_failure
   logformat log_format
   sayformat say_format
   connection
@@ -1462,6 +1462,18 @@ sub after_task_finished {
   my ( $package, $file, $line ) = caller;
   Rex::TaskList->create()
     ->modify( 'after_task_finished', $task, $code, $package, $file, $line );
+}
+
+sub after_connect_failure {
+  my ( $task, $code ) = @_;
+
+  if ( $task eq "ALL" ) {
+    $task = qr{.*};
+  }
+
+  my ( $package, $file, $line ) = caller;
+  Rex::TaskList->create()
+    ->modify( 'after_connect_failure', $task, $code, $package, $file, $line );
 }
 
 =head2 logformat($format)

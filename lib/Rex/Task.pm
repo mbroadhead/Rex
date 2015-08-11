@@ -73,6 +73,7 @@ This is the constructor.
     around => [sub {}, sub {}, ...],
     before_task_start => [sub {}, sub {}, ...],
     after_task_finished => [sub {}, sub {}, ...],
+    after_connect_failure => [sub {}, sub {}, ...],
     name => $task_name,
     executor => Rex::Interface::Executor->create,
   );
@@ -633,6 +634,7 @@ sub connect {
     1;
   } or do {
     if ( !defined Rex::Config->get_fallback_auth ) {
+      $self->run_hook( \$server, "after_connect_failure" );
       croak $@;
     }
   };
@@ -640,6 +642,7 @@ sub connect {
 
   if ( !$self->connection->is_connected ) {
     Rex::pop_connection();
+    $self->run_hook( \$server, "after_connect_failure" );
     croak("Couldn't connect to $server.");
   }
   elsif ( !$self->connection->is_authenticated ) {
@@ -660,6 +663,7 @@ sub connect {
       }
     }
 
+    $self->run_hook( \$server, "after_connect_failure" );
     croak($message);
   }
   else {
@@ -701,18 +705,19 @@ sub get_data {
   my ($self) = @_;
 
   return {
-    func            => $self->{func},
-    server          => $self->{server},
-    desc            => $self->{desc},
-    no_ssh          => $self->{no_ssh},
-    hidden          => $self->{hidden},
-    auth            => $self->{auth},
-    before          => $self->{before},
-    after           => $self->{after},
-    around          => $self->{around},
-    name            => $self->{name},
-    executor        => $self->{executor},
-    connection_type => $self->{connection_type},
+    func                  => $self->{func},
+    server                => $self->{server},
+    desc                  => $self->{desc},
+    no_ssh                => $self->{no_ssh},
+    hidden                => $self->{hidden},
+    auth                  => $self->{auth},
+    before                => $self->{before},
+    after                 => $self->{after},
+    around                => $self->{around},
+    after_connect_failure => $self->{after_connect_failure},
+    name                  => $self->{name},
+    executor              => $self->{executor},
+    connection_type       => $self->{connection_type},
   };
 }
 
